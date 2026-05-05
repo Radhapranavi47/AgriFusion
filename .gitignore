@@ -1,0 +1,27 @@
+# Python virtual environments (never commit — causes huge repos + LF/CRLF spam)
+ml-service/venv/
+**/venv/
+.venv/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.Python
+
+# Node
+node_modules/
+
+# Secrets & local config
+.env
+.env.local
+*.pem
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs & caches
+*.log
+.npm/
+.cache/
