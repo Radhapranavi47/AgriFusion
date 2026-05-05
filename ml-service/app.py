@@ -104,6 +104,12 @@ async def root():
     }
 
 
+@app.get("/health")
+async def health():
+    """Lightweight check for Render (free tier health checks)."""
+    return {"status": "ok"}
+
+
 # ==============================
 # NDVI + SAVI ENDPOINT
 # ==============================

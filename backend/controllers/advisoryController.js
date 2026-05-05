@@ -15,6 +15,7 @@ const { calculateGrowthStage } = require("../services/growthStageService");
 // };
 
 const { getMarketPrices } = require("../services/marketService");
+const { mlPredictUrl } = require("../config/mlService");
 
 /**
  * GET /api/farms/:id/advisory
@@ -75,7 +76,7 @@ const getFarmAdvisory = async (req, res) => {
     }
 
     // 6️⃣ Call ML service (with quickCheck flags; fallback to 0 if missing)
-    const mlServiceUrl = "http://localhost:8000/predict";
+    const mlServiceUrl = mlPredictUrl();
 
     const pestFlag = farm.quickCheck?.pestObserved ? 1 : 0;
     const yellowFlag = farm.quickCheck?.leafYellowing ? 1 : 0;

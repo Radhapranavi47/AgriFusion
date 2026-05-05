@@ -1,0 +1,41 @@
+# Render Blueprint — deploy both services from this monorepo.
+# Dashboard: New → Blueprint → connect this repo → apply `render.yaml`.
+#
+# Free tier: services spin down after ~15 min idle; first request can take ~1 min (cold start).
+# Ensure MongoDB Atlas Network Access allows 0.0.0.0/0 (or Render egress IPs) for MONGO_URI.
+
+services:
+  # 1) Deploy ML first — API reads its URL via RENDER_EXTERNAL_URL.
+  - type: web
+    name: agri-fusion-ml
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ml-service/Dockerfile
+    dockerContext: ml-service
+    healthCheckPath: /health
+
+  - type: web
+    name: agri-fusion-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ML_SERVICE_URL
+        fromService:
+          name: agri-fusion-ml
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: VISUAL_CROSSING_API_KEY
+        sync: false
+      - key: DATA_GOV_API_KEY
+        sync: false

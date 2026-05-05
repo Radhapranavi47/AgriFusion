@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { mlNdviUrl } = require("../config/mlService");
 
 /**
  * Calls Python NDVI microservice to calculate NDVI and SAVI.
@@ -12,7 +13,7 @@ const getNDVIAndSAVI = async (polygonCoordinates) => {
     }
 
     const response = await axios.post(
-      "http://localhost:8000/ndvi",
+      mlNdviUrl(),
       {
         coordinates: polygonCoordinates,
       },
